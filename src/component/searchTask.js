@@ -5,7 +5,7 @@ class SearchTask extends Component {
         super(props);
         this.state = {
             tasks: '',
-            searchTasks: ''
+            searchTasks: '',
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -20,15 +20,22 @@ class SearchTask extends Component {
     render() {
         let filteredTask;
         if (this.state.searchTasks) {
-            filteredTask = this.props.tasks.filter((task) => task.title.includes(this.state.searchTasks)).map(task => <tr key={task.id}><td>{task.title}</td><td>{task.title}</td></tr>)
+            filteredTask = this.props.tasks.filter((task) => 
+            task.title.includes(this.state.searchTasks)).slice(0,10)
+            .map((task, index) => <tr key={task.id} style={{backgroundColor: (task.done) ? 'orange' : ''}}>
+                <td>{task.title}</td>
+                <td>{task.deadLine}</td>
+                </tr>
+                )
         }
         return (
             <div>
-                <input className="form-control form-control-sm" type="text" value={this.state.searchTasks} onChange={this.handleChange} />
+                <input className="form-control form-control-sm" type="text" 
+                value={this.state.searchTasks} onChange={this.handleChange} />
 
 
-                <table class="table table-sm">
-                    <caption>Search result</caption>
+                <table className="table table-sm">
+                    <caption>Search result(Shows first 10 item)</caption>
                     <thead>
                         <tr>
                             <th scope="col">Title</th>

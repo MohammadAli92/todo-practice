@@ -14,6 +14,22 @@ export default class NewForm extends Component {
             showWhat: "all"
         }
     }
+    componentWillMount() {
+        localStorage.getItem('taskStorage') && this.setState({
+            todoList: JSON.parse(localStorage.getItem('taskStorage'))
+        })
+    }
+
+
+    componentDidMount() {
+        // localStorage.getItem('taskStorage')
+    }
+
+
+    componentWillUpdate(nextProps, nextState) {
+        localStorage.setItem('taskStorage', JSON.stringify(nextState.todoList))
+    }
+
 
     handleChange = e => {
         console.log(e.target.value)
@@ -64,14 +80,15 @@ export default class NewForm extends Component {
         }
         return (
             <div className="container">
-                <pre className="px-3"  style={{minHeight:'1000px'}}>
+                <pre className="px-3" style={{ minHeight: '1000px' }}>
                     <div className="row">
                         <div className="col-4 text-center">
                             <h3>Enter your task below</h3>
                             <form onSubmit={this.handleSubmit}>
                                 <input className="form-control form-control-sm" value={this.state.title} onChange={this.handleChange} placeholder="Enter your new task here" />
                                 <Calendar onRecieveDate={this.handleRecieveDate} />
-                                <button className="btn btn-primary btn-sm w-100" type="submit">Insert Task</button>
+                                <button className={(this.state.title) ? "btn btn-primary btn-sm w-100" : "btn btn-secondary btn-sm w-100"}
+                                 type="submit" disabled={(!this.state.title) ? "disabled" : ""}>Insert Task</button>
                             </form>
                         </div>
                         <div className="col-4 text-center">
@@ -89,8 +106,8 @@ export default class NewForm extends Component {
                                     </div>
                                 </div>
                                 <div className="col-9">
-                                    <table class="table table-sm">
-                                        <caption>Click on task in table!</caption>
+                                    <table className="table table-sm">
+                                        <caption>Click on your Done task in table!</caption>
                                         <thead>
                                             <tr>
                                                 <th scope="col">Title</th>
